@@ -1,43 +1,65 @@
-// backend/routes/contactRoutes.js
-
+// server/routes/contactRoutes.js
 const express = require('express');
 const router = express.Router();
 const ContactMessage = require('../models/ContactMessage');
 
 // @route   POST /api/contact
-// @desc    Submit a new contact form message
-// @access  Public
 router.post('/', async (req, res) => {
+  console.log("📥 Receiving Contact Request:", req.body); // LOG THE DATA
+
   const { name, email, reason, message, inquiryContext } = req.body;
 
-  // Basic validation
+  // 1. Basic Validation
   if (!name || !email || !message) {
-    return res.status(400).json({ msg: 'Please enter all required fields: Name, Email, and Message.' });
+    console.log("❌ Validation Failed: Missing Fields");
+    return res.status(400).json({ msg: 'Please enter all required fields.' });
   }
 
   try {
-    // 1. Create a new message instance
-    const newContact = new ContactMessage({
+    const newMessage = new ContactMessage({
       name,
       email,
-      reason,
+      reason, // This MUST match the enum in the Model
       message,
-      // Uses the context passed from the frontend (e.g., Request Representation)
-      inquiryContext: inquiryContext || 'General Inquiry', 
+      inquiryContext
     });
 
-    // 2. Save the message to MongoDB
-    await newContact.save();
+    await newMessage.save();
+    console.log("✅ Message Saved to Database!");
 
-    // 3. (Optional future feature: Send email notification to agency)
-    // mailer.send(newContact); 
-
-    // 4. Send a success response back to the client
-    res.json({ msg: 'Thank you! Your message has been sent and stored successfully.', data: newContact });
+    res.status(201).json({ msg: 'Message received! We will contact you shortly.' });
 
   } catch (err) {
+    console.error('❌ Save Error:', err.message); // THIS WILL SHOW YOU WHY IT FAILED
+    res.status(500).json({ msg: 'Server Error: ' + err.message });
+  }
+});
+
+// @route   GET /api/contact
+router.get('/', async (req, res) => {
+  try {
+    const messages = await ContactMessage.find().sort({ createdAt: -1 });
+    console.log(`📤 Sending ${messages.length} messages to Admin Dashboard`);
+    res.json(messages);
+  } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error during form submission.');
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   PUT /api/contact/:id
+router.put('/:id', async (req, res) => {
+  try {
+    const message = await ContactMessage.findById(req.params.id);
+    if (!message) return res.status(404).json({ msg: 'Message not found' });
+
+    message.status = req.body.status || message.status;
+    await message.save();
+
+    res.json(message);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 });
 

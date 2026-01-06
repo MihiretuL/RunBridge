@@ -1,18 +1,36 @@
-// backend/models/ContactMessage.js
-
+// server/models/ContactMessage.js
 const mongoose = require('mongoose');
 
-const contactSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  reason: { 
-    type: String, 
-    enum: ['Brand', 'Media', 'Athlete', 'General'], 
-    default: 'General' 
+const ContactMessageSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true
   },
-  message: { type: String, required: true },
-  // Optional field to link inquiry context
-  inquiryContext: { type: String, default: 'General Inquiry' }, 
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true
+  },
+  reason: {
+    type: String,
+    required: true,
+    enum: ['General', 'scouting', 'sponsorship', 'media', 'representation'] 
+  },
+  message: {
+    type: String,
+    required: true
+  },
+  inquiryContext: {
+    type: String, // Stores "Inquiry regarding athlete: Birhanu Legese"
+    default: 'General Inquiry'
+  },
+  status: {
+    type: String,
+    enum: ['New', 'In Progress', 'Replied', 'Archived'],
+    default: 'New'
+  }
 }, { timestamps: true });
 
-module.exports = mongoose.model('ContactMessage', contactSchema);
+module.exports = mongoose.model('ContactMessage', ContactMessageSchema);

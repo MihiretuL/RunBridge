@@ -1,123 +1,185 @@
 // frontend/src/pages/AthleteProfile.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api/athletes'; 
-
 const AthleteProfile = () => {
-  const { id } = useParams(); // Get the ID from the URL: /athletes/:id
+  const { id } = useParams();
   const [athlete, setAthlete] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
+    // SIMULATED FETCH for MVP (If API fails, it falls back to this dummy data)
+    // In production, remove the fallback and just use the axios call.
     const fetchAthlete = async () => {
       try {
-        // Dynamic API Call: Fetch detailed info for the specific athlete ID
-        const response = await axios.get(`${API_BASE_URL}/${id}`);
-        setAthlete(response.data);
-        setLoading(false);
+        const res = await axios.get(`http://localhost:5000/api/athletes/${id}`);
+        setAthlete(res.data);
       } catch (err) {
-        console.error(`Error fetching athlete ${id}:`, err);
-        setError("Athlete profile not found or server error.");
+        console.warn("API not connected yet, loading PLACEHOLDER data for demo.");
+        setAthlete({
+            name: "Gaddisa Tolla ",
+            country: "Ethiopia",
+            club: "Taruna Stivava",
+            trainingLocation: "Sululta",
+            altitudeMeters: 2500,
+            isVerified: true,
+            image: "/images/img1.jpg",
+            bio: "One of the most promising talents coming out of the Taruna Stivava training camp. Specialized in 5000m and 10000m, demonstrating exceptional endurance at high altitude.",
+            videos: [], // Intentionally empty to test the placeholder video logic below
+            stats: [
+                { event: "5000m", personalRecord: "13:15.02", date: "2024-03-10", isAltitude: true },
+                { event: "10000m", personalRecord: "27:40.50", date: "2024-05-15", isAltitude: false }
+            ]
+        });
+      } finally {
         setLoading(false);
       }
     };
     fetchAthlete();
-  }, [id]); // Re-run effect if the ID in the URL changes
+  }, [id]);
 
-  // --- RENDERING LOGIC ---
-  if (loading) {
-    return <div className="text-center py-20 text-xl text-runbridge-blue">Loading Athlete Details...</div>;
-  }
+  if (loading) return <div className="flex justify-center items-center h-screen text-gray-500">Loading Athlete Profile...</div>;
+  if (!athlete) return <div className="text-center py-20 text-red-500">Athlete not found.</div>;
 
-  if (error || !athlete) {
-    return <div className="text-center py-20 text-xl text-red-600">Error: {error}</div>;
-  }
-  
-  // Destructure athlete data for cleaner rendering
-  const { name, sport, country, bio, image, stats } = athlete;
+  // --- PLACEHOLDER LOGIC ---
+  // If no real videos exist, create a dummy one for the layout
+  const displayVideos = athlete.videos && athlete.videos.length > 0 
+    ? athlete.videos 
+    : [{ title: "Training Session: Sululta Track (Sample)", isPlaceholder: true }];
 
   return (
-    <div className="bg-bg-light">
-      {/* 1. Hero Image Section */}
-      <div className="relative h-96 overflow-hidden">
-        {/* Large hero image */}
-        <img
-          src={`https://via.placeholder.com/1200x600?text=Profile+of+${name.replace(/\s/g, '+')}`}
-          alt={`Hero shot of ${name}`}
-          className="w-full h-full object-cover brightness-75"
+    <div className="bg-gray-50 min-h-screen pb-20">
+      
+      {/* 1. HERO HEADER */}
+      <div className="relative bg-gray-900 h-80 lg:h-96">
+        <img 
+          src={athlete.image || "/images/img1.jpg"} 
+          className="w-full h-full object-cover opacity-50" 
+          alt="Background" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-runbridge-blue/70 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
         
-        {/* Profile Header Overlay */}
-        <div className="absolute bottom-0 left-0 p-8 md:p-16 max-w-7xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight">
-            {name}
-          </h1>
-          <p className="text-xl md:text-3xl text-gray-200 mt-2">{sport} | {country}</p>
+        <div className="absolute bottom-0 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              {athlete.isVerified && (
+                 <span className="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded mb-2 inline-flex items-center gap-1">
+                   ✓ Verified Elite
+                 </span>
+              )}
+              <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight">{athlete.name}</h1>
+              <p className="text-xl text-gray-300 mt-1 flex items-center gap-2">
+                🇪🇹 {athlete.country} 
+                <span className="text-gray-500">|</span> 
+                {athlete.club}
+              </p>
+            </div>
+            
+            {/* Altitude Badge - Crucial for Ethiopian Context */}
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-lg text-white">
+              <p className="text-xs text-gray-400 uppercase">Home Base</p>
+              <p className="font-bold">{athlete.trainingLocation || "Addis Ababa"}</p>
+              <p className="text-sm text-yellow-400 font-mono">⛰ {athlete.altitudeMeters || 2500}m Elev.</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 2. Main Content & Stats */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* Left Column: Bio & Video */}
-        <div className="lg:col-span-2">
-          <h2 className="text-3xl font-bold text-runbridge-blue mb-4 border-b-2 border-accent-blue pb-2">Biography</h2>
-          <p className="text-gray-700 mb-8 leading-relaxed">
-            {bio || "Detailed biography coming soon. Known for dedication and incredible resilience in major championships."}
-          </p>
+        {/* 2. LEFT COLUMN (Info & Video) */}
+        <div className="lg:col-span-2 space-y-8">
           
-          {/* Placeholder for Video Section */}
-          <div className="mt-8">
-            <h3 className="text-2xl font-semibold text-runbridge-blue mb-3">Highlight Reel</h3>
-            <div className="bg-gray-200 h-64 flex items-center justify-center rounded-lg">
-              <span className="text-gray-500">Video Player Placeholder</span>
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Athlete Bio</h2>
+            <p className="text-gray-600 leading-relaxed">
+              {athlete.bio}
+            </p>
+          </div>
+
+          {/* Video Section with Placeholders */}
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <span>🎥</span> Race & Training Footage
+            </h2>
+            
+            <div className="grid gap-6">
+              {displayVideos.map((video, idx) => (
+                <div key={idx} className="bg-black rounded-lg overflow-hidden relative group">
+                  {video.isPlaceholder ? (
+                    // PLACEHOLDER VIDEO UI
+                    <div className="w-full h-64 md:h-80 bg-gray-800 flex flex-col items-center justify-center relative cursor-pointer">
+                        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[20px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
+                        </div>
+                        <p className="text-gray-400 font-medium">Sample Footage (Placeholder)</p>
+                        <p className="text-gray-600 text-sm mt-1">Video content will appear here</p>
+                    </div>
+                  ) : (
+                    // REAL VIDEO UI
+                    <>
+                    <iframe 
+                      src={video.url.replace("watch?v=", "embed/")} 
+                      title={video.title}
+                      className="w-full h-64 md:h-80"
+                      allowFullScreen
+                    ></iframe>
+                    </>
+                  )}
+                  <div className="bg-gray-900 p-3">
+                    <p className="text-sm font-semibold text-white">{video.title}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Right Column: Stats, Endorsements & CTA */}
-        <aside className="lg:col-span-1 space-y-8">
+        {/* 3. RIGHT COLUMN (Stats & Contact) */}
+        <div className="lg:col-span-1 space-y-6">
           
-          {/* Stats Section: PRs, Medals */}
-          <div className="bg-white p-6 rounded-lg shadow-lg border-t-4 border-accent-blue">
-            <h3 className="text-2xl font-bold text-runbridge-blue mb-4">Key Performance Records</h3>
-            {stats && stats.length > 0 ? (
-              <ul className="space-y-3">
-                {stats.map((stat, index) => (
-                  <li key={index} className="flex justify-between border-b pb-1">
-                    <span className="font-medium text-gray-600">{stat.event}:</span>
-                    <span className="font-bold text-runbridge-blue">{stat.personalRecord}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500 italic">No specific stats available yet.</p>
-            )}
-          </div>
-          
-          {/* Endorsements/Sponsorships Placeholder */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-bold text-runbridge-blue mb-3">Endorsements</h3>
-            <div className="flex flex-wrap gap-4 text-gray-500">
-              <span className="px-3 py-1 bg-gray-100 rounded text-sm">Nike</span>
-              <span className="px-3 py-1 bg-gray-100 rounded text-sm">Gatorade</span>
-              <span className="px-3 py-1 bg-gray-100 rounded text-sm">Future Brand</span>
+          {/* Stats Table */}
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+            <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
+              <h3 className="font-bold text-lg">Personal Bests</h3>
+              <span className="text-xs bg-gray-700 px-2 py-1 rounded">Official</span>
+            </div>
+            <div className="divide-y divide-gray-100">
+              {athlete.stats && athlete.stats.map((stat, idx) => (
+                <div key={idx} className="p-4 flex justify-between items-center hover:bg-gray-50">
+                  <div>
+                    <p className="font-bold text-gray-900">{stat.event}</p>
+                    <p className="text-xs text-gray-500">{new Date(stat.date).getFullYear()}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl font-bold text-blue-600 font-mono">{stat.personalRecord}</p>
+                    {stat.isAltitude && (
+                        <div className="flex items-center justify-end gap-1 text-[10px] text-yellow-600 mt-1">
+                             <span>⚠️ Altitude</span>
+                        </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Contact CTA Button (Request Representation) */}
-          <Link
-            to="/contact?athleteName=Requesting+Representation" // Pass a query param for context
-            className="w-full block text-center py-4 border-4 border-transparent text-lg font-bold rounded-lg text-white bg-accent-blue hover:bg-runbridge-blue transition duration-300 shadow-xl transform hover:scale-[1.02]"
-          >
-            Request to Work With {name.split(' ')[0]}
-          </Link>
-        </aside>
+          {/* Contact CTA */}
+          <div className="bg-green-700 rounded-xl shadow-lg p-6 text-center text-white">
+            <h3 className="text-xl font-bold mb-2">Scout this Athlete</h3>
+            <p className="text-green-100 text-sm mb-6">
+              Contact RunBridge Pro for verified times, full race history, and contract availability.
+            </p>
+            <Link 
+              to={`/contact?athlete=${athlete.name}`} 
+              className="block w-full bg-white text-green-800 font-bold py-3 rounded-lg hover:bg-green-50 transition-colors shadow-md"
+            >
+              Request Connection
+            </Link>
+          </div>
+
+        </div>
       </div>
     </div>
   );
