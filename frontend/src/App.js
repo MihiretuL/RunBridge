@@ -50,7 +50,11 @@ import NotFound from './pages/NotFound';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import AdminDashboard from './pages/AdminDashboard';
-import ScrollToTop from './components/ScrollToTop'; // <--- Import here
+import ScrollToTop from './components/ScrollToTop'; 
+import Login from './pages/Login'; 
+import PrivacyPolicy from './pages/PrivacyPolicy'; 
+import TermsOfService from './pages/TermsOfService';
+import CookieSettings from './pages/CookieSettings';
 
 function App() {
   return (
@@ -68,6 +72,11 @@ function App() {
             <Route path="/athletes/:id" element={<AthleteProfile />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/login" element={<Login />} /> 
+            {/* NEW LEGAL ROUTES */}
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/cookies" element={<CookieSettings />} />
             
             {/* Catch-all for 404 */}
             <Route path="*" element={<NotFound />} />

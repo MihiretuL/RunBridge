@@ -173,7 +173,7 @@ const Home = () => {
              {/* Partner 1 */}
              <div className="group cursor-pointer">
                <span className="text-2xl md:text-3xl font-black text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
-                 TARUNA STIVAVA
+                 TIRUNESH DIBABA CLUB
                </span>
              </div>
 

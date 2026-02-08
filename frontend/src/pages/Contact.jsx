@@ -70,7 +70,7 @@ const Contact = () => {
             Partner with <span className="text-blue-500">Performance</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Whether you are a club scout, a global brand, or an elite athlete—we are ready to connect.
+            Whether you are a club scout, a global brand, or an elite athlete we are ready to connect.
           </p>
         </div>
       </div>
@@ -82,26 +82,52 @@ const Contact = () => {
           <div className="bg-blue-600 lg:w-2/5 p-10 text-white flex flex-col justify-between">
             <div>
               <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+              
+              {/* --- UPDATED LIST START --- */}
               <ul className="space-y-6">
+                
+                {/* 1. Global HQ (Chicago) */}
                 <li className="flex items-start gap-4">
-                  <div className="bg-blue-500 p-2 rounded-lg">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <div className="bg-blue-500 p-2 rounded-lg shrink-0">
+                    <span className="text-2xl">🇺🇸</span>
                   </div>
                   <div>
-                    <p className="font-semibold text-lg">HQ & Training Base</p>
-                    <p className="text-blue-100">Sululta, Oromia Region<br/>Ethiopia</p>
+                    <p className="font-semibold text-lg">Global Headquarters</p>
+                    <p className="text-blue-100">
+                      Chicago, IL<br/>
+                      United States
+                    </p>
                   </div>
                 </li>
+
+                {/* 2. Regional Operations (Asella) */}
                 <li className="flex items-start gap-4">
-                  <div className="bg-blue-500 p-2 rounded-lg">
+                  <div className="bg-blue-500 p-2 rounded-lg shrink-0">
+                    <span className="text-2xl">🇪🇹</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-lg">Regional Operations</p>
+                    <p className="text-blue-100">
+                      Asella, Arsi Zone<br/>
+                      Ethiopia
+                    </p>
+                  </div>
+                </li>
+
+                {/* 3. Email / Scouting */}
+                <li className="flex items-start gap-4">
+                  <div className="bg-blue-500 p-2 rounded-lg shrink-0">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                   </div>
                   <div>
                     <p className="font-semibold text-lg">Scouting Department</p>
-                    <p className="text-blue-100">scouting@runbridgepro.com</p>
+                    <p className="text-blue-100 break-all">scouting@runbridgepro.com</p>
                   </div>
                 </li>
+
               </ul>
+              {/* --- UPDATED LIST END --- */}
+
             </div>
 
             <div className="mt-12">
@@ -151,7 +177,6 @@ const Contact = () => {
                 <select name="reason" value={formData.reason} onChange={handleChange}
                   className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 py-3 px-4 bg-white"
                 >
-                  {/* --- FIXED VALUES: These must match your Backend Database Enums --- */}
                   <option value="General">General Inquiry</option>
                   <option value="scouting">Scouting / Club Trial</option>
                   <option value="sponsorship">Brand Sponsorship</option>

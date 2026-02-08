@@ -32,6 +32,7 @@ mongoose
 // ------------------------------------------------------------------
 app.use("/api/athletes", require("./routes/athleteRoutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
+app.use('/api/auth', require('./routes/authRoutes'));
 
 // ------------------------------------------------------------------
 // 4. SERVER START
