@@ -1,63 +1,3 @@
-// // frontend/src/components/Header.jsx
-
-// import { Link } from 'react-router-dom';
-
-// const Header = () => {
-//   return (
-//     <header className="sticky top-0 z-50 bg-white shadow-lg"> {/* Slightly stronger shadow */}
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//         <div className="flex justify-between items-center h-16">
-//           {/* Logo/Brand Name */}
-//           <div className="flex-shrink-0">
-//             <Link to="/" className="text-2xl font-bold text-runbridge-blue hover:text-accent-blue transition duration-300 transform hover:scale-105">
-//               RunBridge
-//             </Link>
-//           </div>
-
-//           {/* Navigation Links */}
-//           <nav className="hidden md:flex space-x-8">
-//             <NavLink to="/">Home</NavLink>
-//             <NavLink to="/athletes">Athletes</NavLink>
-//             <NavLink to="/contact">Contact</NavLink>
-//           </nav>
-
-//           {/* CTA Button (Visible on large screens) */}
-//           <div className="hidden md:block">
-//             <Link
-//               to="/contact?reason=representation"
-//               className="px-4 py-2 border-2 border-runbridge-blue text-sm font-medium rounded-md text-white bg-runbridge-blue transition duration-300 shadow-md hover:bg-accent-blue hover:shadow-lg transform hover:scale-[1.03]"
-//             >
-//               Request Representation
-//             </Link>
-//           </div>
-
-//           {/* Mobile Menu Icon (Placeholder) */}
-//           <div className="md:hidden">
-//             <button className="text-runbridge-blue p-2 hover:text-accent-blue transition duration-200">
-//                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-//             </button>
-//           </div>
-
-//         </div>
-//       </div>
-//     </header>
-//   );
-// };
-
-// // Helper component for active link styling with added polish
-// const NavLink = ({ to, children }) => (
-//   <Link
-//     to={to}
-//     className="text-gray-600 hover:text-runbridge-blue font-medium transition duration-300 hover:border-b-2 hover:border-accent-blue pb-1"
-//   >
-//     {children}
-//   </Link>
-// );
-
-// export default Header;
-
-// ***********************************
-
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 
@@ -79,13 +19,6 @@ const Header = () => {
           {/* 1. BRANDING & LOGO */}
           <div className="flex-shrink-0 flex items-center gap-3">
             <Link to="/" className="flex items-center gap-2 group" onClick={closeMenu}>
-              {/* Ensure your logo is in public/images/logo.jpg or logo.png */}
-              <img 
-                src="/images/logo.jpg" 
-                alt="RunBridge Pro Logo" 
-                className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                onError={(e) => { e.target.style.display = 'none'; }} // Hides image if broken
-              />
               <div className="flex flex-col">
                 <span className="text-2xl font-extrabold text-gray-900 tracking-tight leading-none">
                   RUN<span className="text-blue-600">BRIDGE</span>
@@ -97,9 +30,10 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* 2. DESKTOP NAVIGATION */}
+          {/* 2. DESKTOP NAVIGATION (Updated with About) */}
           <nav className="hidden md:flex space-x-8 items-center">
             <CustomNavLink to="/">Home</CustomNavLink>
+            <CustomNavLink to="/about">About Us</CustomNavLink> {/* <--- ADDED HERE */}
             <CustomNavLink to="/athletes">Scout Talent</CustomNavLink>
             <CustomNavLink to="/contact">Contact</CustomNavLink>
           </nav>
@@ -134,15 +68,15 @@ const Header = () => {
         </div>
       </div>
 
-      {/* 5. MOBILE MENU DROPDOWN (The "Robust" Part) */}
-      {/* Smooth transition for mobile menu */}
+      {/* 5. MOBILE MENU DROPDOWN (Updated with About) */}
       <div 
         className={`md:hidden bg-white border-t border-gray-100 overflow-hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+          isMobileMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="px-4 pt-2 pb-6 space-y-2 shadow-inner">
           <MobileNavLink to="/" onClick={closeMenu}>Home</MobileNavLink>
+          <MobileNavLink to="/about" onClick={closeMenu}>About Us</MobileNavLink> {/* <--- ADDED HERE */}
           <MobileNavLink to="/athletes" onClick={closeMenu}>Scout Talent</MobileNavLink>
           <MobileNavLink to="/contact" onClick={closeMenu}>Contact</MobileNavLink>
           
@@ -168,7 +102,7 @@ const CustomNavLink = ({ to, children }) => (
   <NavLink
     to={to}
     className={({ isActive }) =>
-      `text-sm font-bold uppercase tracking-wide transition-colors duration-300 border-b-2 ${
+      `text-sm font-bold uppercase tracking-wide transition-colors duration-300 border-b-2 py-1 ${
         isActive 
           ? "text-blue-600 border-blue-600" 
           : "text-gray-500 border-transparent hover:text-gray-900 hover:border-gray-300"

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AthleteCard from '../components/AthleteCard';
+import { API_URL } from '../api';
 
 const Athletes = () => {
   const [athletes, setAthletes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterEvent, setFilterEvent] = useState('All');
+  
 
   // Fetch all athletes on mount
   useEffect(() => {
@@ -118,3 +120,4 @@ const Athletes = () => {
 };
 
 export default Athletes;
+

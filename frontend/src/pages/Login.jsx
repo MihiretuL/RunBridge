@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { API_URL } from '../api';
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -18,7 +18,7 @@ const Login = () => {
     
     try {
       // 1. Send login request
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const res = await axios.post(`${API_URL}/auth/login`, formData);
       
       // 2. Save the "Key" (Token) to browser storage
       localStorage.setItem('token', res.data.token);
@@ -70,3 +70,4 @@ const Login = () => {
 };
 
 export default Login;
+

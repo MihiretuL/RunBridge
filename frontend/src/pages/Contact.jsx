@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/contact'; 
+import { API_URL } from '../api'; // Import at the top
 
 const Contact = () => {
   const [searchParams] = useSearchParams();
@@ -42,7 +42,7 @@ const Contact = () => {
     setStatus({ message: null, type: null });
 
     try {
-      await axios.post(API_URL, formData);
+      await axios.post(`${API_URL}/contact`, formData);
       setStatus({ 
         message: "Message sent! Our scouting team will respond within 24 hours.", 
         type: 'success' 

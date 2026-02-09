@@ -1,17 +1,6 @@
-# Node
+# .gitignore
 node_modules/
-npm-debug.log
-
-# Environment files
 .env
-.env.*
-
-# Build outputs
+.DS_Store
 dist/
 build/
-
-# Logs
-*.log
-
-# OS
-.DS_Store

@@ -2,18 +2,22 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../api';
+
 
 const AthleteProfile = () => {
+  
   const { id } = useParams();
   const [athlete, setAthlete] = useState(null);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     // SIMULATED FETCH for MVP (If API fails, it falls back to this dummy data)
     // In production, remove the fallback and just use the axios call.
     const fetchAthlete = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/athletes/${id}`);
+        const res = await axios.get(`${API_URL}/athletes/${id}`);
         setAthlete(res.data);
       } catch (err) {
         console.warn("API not connected yet, loading PLACEHOLDER data for demo.");
@@ -186,3 +190,5 @@ const AthleteProfile = () => {
 };
 
 export default AthleteProfile;
+
+
