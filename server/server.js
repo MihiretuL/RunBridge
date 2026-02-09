@@ -21,8 +21,9 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:5173', // Vite Local
   'http://localhost:3000', // React Scripts Local
-  'https://runbridgepro.vercel.app', // <--- Your Future Live Site
-  'https://www.runbridgepro.com'     // <--- Your Custom Domain
+  'https://runbridge-pro.vercel.app', // <--- Your Future Live Site
+  'https://www.runbridgepro.com' ,    // <--- Your Custom Domain
+  'https://runbridge-igsrrpii7-didymosls-projects.vercel.app';
 ];
 
 app.use(cors({
