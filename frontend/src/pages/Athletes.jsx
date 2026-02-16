@@ -14,7 +14,7 @@ const Athletes = () => {
   useEffect(() => {
     const fetchAthletes = async () => {
       try {
-        const response = await axios.get('https://runbridge-api.onrender.com/api');
+        const response = await axios.get('https://runbridge-api.onrender.com/api/athletes');
         setAthletes(response.data);
       } catch (err) {
         console.error("Error fetching athletes:", err);
