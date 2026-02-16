@@ -172,7 +172,7 @@ const Athlete = require('./models/Athlete');
 dotenv.config();
 
 // Define your live website URL here to make it easy to change later
-const BASE_URL = "https://runbridge-pro.vercel.app";
+//const BASE_URL = "https://runbridge-pro.vercel.app";
 
 // --- THE ROSTER DATA ---
 const sampleAthletes = [
@@ -184,7 +184,7 @@ const sampleAthletes = [
     trainingLocation: "Sululta",
     altitudeMeters: 2500,
     // We combine the Base URL with your image path
-    image: `${BASE_URL}/images/img1.jpg`, 
+     
     isVerified: true,
     isFeatured: true,
     stats: [
@@ -200,7 +200,7 @@ const sampleAthletes = [
     club: "Addis Academy",
     trainingLocation: "Addis Ababa",
     altitudeMeters: 2355,
-    image: `${BASE_URL}/images/img2.jpg`,
+    image: "/images/img2.jpg",
     isVerified: true,
     isFeatured: true,
     stats: [
@@ -216,7 +216,7 @@ const sampleAthletes = [
     club: "Nike Oregon Project (Former)",
     trainingLocation: "Portland / Sululta",
     altitudeMeters: 0,
-    image: `${BASE_URL}/images/img7.png`,
+    image: "/images/img7.png",
     isVerified: true,
     isFeatured: false,
     stats: [
@@ -232,7 +232,7 @@ const sampleAthletes = [
     club: "NN Running Team",
     trainingLocation: "Mekelle",
     altitudeMeters: 2200,
-    image: `${BASE_URL}/images/img3.jpg`,
+    image: "/images/img3.jpg",
     isVerified: true,
     isFeatured: true,
     stats: [
@@ -248,7 +248,7 @@ const sampleAthletes = [
     club: "Tirunesh Dibaba",
     trainingLocation: "Bekoji",
     altitudeMeters: 2800,
-    image: `${BASE_URL}/images/img4.jpg`,
+    image: "/images/img4.jpg",
     isVerified: false, 
     isFeatured: false,
     stats: [
@@ -264,7 +264,7 @@ const sampleAthletes = [
     club: "Adidas",
     trainingLocation: "Addis Ababa",
     altitudeMeters: 2355,
-    image: `${BASE_URL}/images/img5.jpg`,
+    image: "/images/img5.jpg",
     isVerified: true,
     isFeatured: false,
     stats: [
@@ -280,7 +280,7 @@ const sampleAthletes = [
     club: "Unattached", 
     trainingLocation: "Bekoji",
     altitudeMeters: 2800,
-    image: `${BASE_URL}/images/img008.jpg`,
+    image: "/images/img008.jpg",
     isVerified: true,
     isFeatured: true,
     stats: [
@@ -296,7 +296,7 @@ const sampleAthletes = [
     club: "Nike",
     trainingLocation: "Addis Ababa",
     altitudeMeters: 2355,
-    image: `${BASE_URL}/images/img009.jpg`,
+    image: "/images/img009.jpg",
     isVerified: true,
     isFeatured: false,
     stats: [
