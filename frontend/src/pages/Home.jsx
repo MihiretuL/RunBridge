@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AthleteCard from '../components/AthleteCard.jsx';
 
-const FEATURED_API_URL = 'https://runbridge-api.onrender.com/api';
+const FEATURED_API_URL = 'https://runbridge-api.onrender.com/api/athletes';
 
 const Home = () => {
   const [featuredAthletes, setFeaturedAthletes] = useState([]);
