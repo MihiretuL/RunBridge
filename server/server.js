@@ -18,28 +18,21 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 
 // B. CORS (Restricts who can talk to your backend)
+// This is your "VIP Guest List". Only these websites can fetch data.
 const allowedOrigins = [
-  'http://localhost:5173', // Vite Local
-  'http://localhost:3000', // React Scripts Local
-  'https://runbridge-pro.vercel.app', // <--- Your Future Live Site
-  'https://www.runbridgepro.com' ,    // <--- Your Custom Domain
-  'https://runbridge-igsrrpii7-didymosls-projects.vercel.app'
+  'http://localhost:5173',          // Your PC (Vite)
+  'http://localhost:3000',          // Your PC (React Scripts)
+  'https://runbridgepro.com',       // <--- 🚨 YOUR NEW LIVE DOMAIN
+  'https://www.runbridgepro.com',   // <--- YOUR NEW LIVE DOMAIN (WWW)
+  'https://runbridge-pro.vercel.app', // Your Vercel Backup
+  'https://runbridge-igsrrpii7-didymosls-projects.vercel.app' // Vercel Preview
 ];
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     // Allow requests with no origin (like mobile apps, curl, or Postman)
-//     if (!origin) return callback(null, true);
-    
-//     if (allowedOrigins.indexOf(origin) === -1) {
-//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-//       return callback(new Error(msg), false);
-//     }
-//     return callback(null, true);
-//   },
-//   credentials: true // Optional: enables cookies/sessions if you need them later
-// }));
-app.use(cors({ origin: '*' }));
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true // Allows cookies/sessions if you add login features later
+}));
+
 // C. Body Parsing (Allows your backend to read JSON data)
 app.use(express.json());
 
@@ -48,7 +41,7 @@ app.use(express.json());
 // 2. DATABASE CONNECTION
 // ------------------------------------------------------------------
 mongoose
-  .connect(process.env.MONGO_URI) // Removed deprecated options (not needed in Mongoose 6+)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("⚡ MongoDB connected successfully."))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
@@ -60,7 +53,7 @@ app.use("/api/athletes", require("./routes/athleteRoutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
 app.use('/api/auth', require('./routes/authRoutes'));
 
-// Simple "Health Check" route to test if server is alive
+// Simple "Health Check" route
 app.get('/', (req, res) => {
   res.send('RunBridge Pro API is running...');
 });
