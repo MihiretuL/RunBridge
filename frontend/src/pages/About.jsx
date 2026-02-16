@@ -149,7 +149,7 @@ const About = () => {
                 <h3 className="text-lg font-bold text-gray-900">Addisu Sima</h3>
                 <p className="text-green-600 font-medium">Head of Scouting (Ethiopia)</p>
                 <p className="text-gray-500 text-sm mt-2 max-w-xs mx-auto">
-                  Based in Asella. Former national athlete with deep ties to the Oromia athletics federation.
+                 Based in Asella. Key regional figure with deep diplomatic ties to the Oromia Athletics Federation and local training camps.
                 </p>
               </div>
             </div>
